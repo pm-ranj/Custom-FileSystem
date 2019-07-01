@@ -47,6 +47,7 @@ public class Block implements Serializable {
         }
     }
 
+    // it used on state saving/loading methods for more efficiency
     public byte[] buildDataFromString(String str) {
         var list = str.split(" ");
 
@@ -59,6 +60,8 @@ public class Block implements Serializable {
         return bytes;
     }
 
+    //a method for detecting weather a data buffer is full or empty
+    //it commented out from code
     public boolean isDataValidForWritingBytes() {
         for (byte b : data) {
             if(b != 0) {
@@ -70,6 +73,9 @@ public class Block implements Serializable {
     }
 
 
+    /**
+     * @see Serializable
+     */
     @Override
     public JSONObject serialize() {
         JSONObject obj = new JSONObject();
@@ -78,6 +84,7 @@ public class Block implements Serializable {
         return obj;
     }
 
+    // deserialize method also used as re evaluating the class attributes
     @Override
     public JSONObject deserialize(String str) throws ParseException {
 

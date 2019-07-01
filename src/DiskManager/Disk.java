@@ -166,7 +166,7 @@ public class Disk {
     //depicting the blocks of Disk
     public static void printBlock() {
         System.out.println("******************");
-        System.out.println("BLOCK SIZE IS 4096");
+        System.out.println("BLOCK SIZE IS " + BLOCK_SIZE + "KB");
         System.out.println("******************");
 
         for (int i=0; i<blocks.size(); i++) {
