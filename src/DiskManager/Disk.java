@@ -1,3 +1,5 @@
+package DiskManager;
+
 import Utils.Block;
 import Utils.ToWriteData;
 
@@ -10,9 +12,23 @@ import java.util.List;
 
 public class Disk {
 
-    private static final List<Block> blocks;
+    private static final String  LoadFilePath = "./DiskState.pm";
+
+    private static List<Block> blocks;
+
     static {
+
         blocks = new ArrayList<>();
+        var diskUtils = new DiskUtilities(blocks);
+        try {
+            blocks = diskUtils.LoadDiskState();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (blocks == null) {
+            System.out.println("null loaded");
+            blocks = new ArrayList<>();
+        }
     }
 
     static int BLOCK_SIZE = 4096 ;
@@ -48,11 +64,16 @@ public class Disk {
         return true ;
     }
     public static byte[] readFile(String _fileName, int _fileOffset) {
+
+        // path resolving
         String filePathString = System.getProperty("user.dir") ;
         filePathString = filePathString + "\\" + _fileName ;
+
         File file = new File(filePathString) ;
         byte[] buffer = new byte[BLOCK_SIZE] ;
+
         RandomAccessFile raf = null;
+
         try {
             raf = new RandomAccessFile(file, "r");
         } catch (FileNotFoundException e) {
@@ -69,50 +90,45 @@ public class Disk {
     }
     public static boolean writeFile(byte[] _buffer, int _length, String _fileName,
                                     int _fileOffset) {
-
-
+        //path resolving
         String filePathString = System.getProperty("user.dir") ;
         filePathString = filePathString + "\\" + _fileName ;
+
         File file = new File(filePathString);
 
         RandomAccessFile raf = null;
 
-        try {
-            raf = new RandomAccessFile(file, "rw");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
 
         try {
-            //temp list for current file addresses
-            List<Integer> currentFileBlockPos = new ArrayList<>();
+            raf = new RandomAccessFile(file, "rw");
+
             // putting data buffer in desired block
             for(var block : blocks) {
                 if (block != null){
                     if (block.filename.equals(_fileName)) {
-                        currentFileBlockPos.add(blocks.indexOf(block));
                         if (blocks.indexOf(block) == _fileOffset - 1)
-//                        if (block.isDataValidForWritingBytes())
+                            //comment out code below for not to overwriting
+                            //if (block.isDataValidForWritingBytes())
                             block.fillDataBuffer(_buffer);
                     }
                 }
 
             }
 
-            for (var i : currentFileBlockPos) {
-
-            }
-
-
             //writing in actual file
             raf.seek(_fileOffset * BLOCK_SIZE);
-            raf.write(_buffer) ;
+            raf.write(_buffer);
+            raf.close();
 
-            raf.close() ;
+            // saving the state for consistency
+            var diskUtils = new DiskUtilities(blocks);
+            diskUtils.saveDiskState();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return true ;
+
+        return true;
     }
 
     public static void syncDisk(List<ToWriteData> listOfData, String filename) {
@@ -122,13 +138,18 @@ public class Disk {
     }
 
     public static void printBlock() {
+        System.out.println("******************");
         System.out.println("BLOCK SIZE IS 4096");
+        System.out.println("******************");
+
         for (int i=0; i<blocks.size(); i++) {
             System.out.println("blockNO. " + i + " , filename: " +blocks.get(i).filename + " ,data: " + blocks.get(i).getDataAsStringToPrint() );
         }
 
-//        for(var item : blocks) {
-//            System.out.println("filename: " + item.filename + " ,data: " + item.data);
-//        }
+    }
+
+
+    private static void loadDisk() {
+
     }
 }
