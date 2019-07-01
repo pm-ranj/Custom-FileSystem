@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 public class Disk {
-    static int STD_BLOCK_SIZE = 2 ;
+    static int BLOCK_SIZE = 2 ;
     public static boolean OpenFile(String _fileName) {
         String filePathString = System.getProperty("user.dir") ;
         filePathString = filePathString + "\\" + _fileName ;
@@ -26,7 +26,7 @@ public class Disk {
         String filePathString = System.getProperty("user.dir") ;
         filePathString = filePathString + "\\" + _fileName ;
         File file = new File(filePathString) ;
-        byte[] buffer = new byte[STD_BLOCK_SIZE] ;
+        byte[] buffer = new byte[BLOCK_SIZE] ;
         RandomAccessFile raf = null;
         try {
             raf = new RandomAccessFile(file, "r");
