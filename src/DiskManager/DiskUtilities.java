@@ -2,11 +2,13 @@ package DiskManager;
 
 import Serializers.Serializable;
 import Utils.Block;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DiskUtilities implements Serializable {
@@ -21,7 +23,13 @@ public class DiskUtilities implements Serializable {
     @Override
     public JSONObject serialize() {
         JSONObject obj = new JSONObject();
-        obj.put("list", blocks);
+        JSONArray array = new JSONArray();
+        for(var item: blocks) {
+
+            array.add(item.serialize());
+
+        }
+        obj.put("list", array);
         return obj;
     }
 
@@ -63,12 +71,19 @@ public class DiskUtilities implements Serializable {
         var file = LoadOrCreateFile();
         BufferedReader reader = new BufferedReader(new FileReader(file));
         var jsonStr = reader.readLine();
+        System.out.println("json string: " + jsonStr);
         reader.close();
 
-        if (!jsonStr.equals("")) {
-
+        if (jsonStr != null) {
+                blocks = new ArrayList<>();
                 var obj = deserialize(jsonStr);
-                var blocks = (List<Block>)obj.get("list");
+                var jsonArray = (List)obj.get("list");
+                for (int i=0; i<jsonArray.size(); i++) {
+                    var b = new Block();
+                    b.deserialize( jsonArray.get(i).toString());
+                    blocks.add(b);
+                }
+
                 return blocks;
         } else {
             return null;

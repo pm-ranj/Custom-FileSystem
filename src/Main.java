@@ -5,7 +5,7 @@ public class Main {
         String fileName = "MEGAtemp2" ;
 //        String fileName2 = "MEGAtemp3" ;
 //        String fileName3 = "MEGAtemp4" ;
-        Disk.OpenFile(fileName, 15000);
+        Disk.OpenFile(fileName, 900);
 //        DiskManager.Disk.OpenFile(fileName2, 1000) ;
 //        DiskManager.Disk.OpenFile(fileName3, 15000) ;
 
@@ -19,6 +19,9 @@ public class Main {
         buffer[1] = 110 ;
         Disk.writeFile(buffer, buffer.length, fileName, 3) ;
         byte[] buff = Disk.readFile(fileName, 0) ;
+
+
+//        Disk.readFile()
 //        PrintBytes(buff, buff.length) ;
 
 
