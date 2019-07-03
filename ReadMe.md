@@ -19,7 +19,7 @@ Disk library will divide the file into 4-Kbyte blocks. Blocks will be written us
 Each block data structures saves data of each file and name of each file
 
 
-##**Code Samples**
+## **Code Samples**
 
 There are some explanation about methods and its usage (the code is fluent commenting)
 
@@ -97,7 +97,6 @@ Writes into disk block:
                           if (block.filename.equals(_fileName)) {
                               currentFileBlockPos.add(blocks.indexOf(block));
                               if (blocks.indexOf(block) == _fileOffset - 1)
-        //                      if (block.isDataValidForWritingBytes())
                                   block.fillDataBuffer(_buffer);
                           }
                       }
