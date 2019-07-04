@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *DiskUtilities class meant to be a helper class for the Disk class
+ * DiskUtilities class meant to be a helper class for the Disk class
  * to optimize the saving and loading system for the disk
  * it is appropriate for situations like lack of power and sudden causes to shouting down the disk
  * and it grantees the data consistency of the disk

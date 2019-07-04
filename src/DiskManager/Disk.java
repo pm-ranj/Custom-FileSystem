@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Disk {
 
-    public static int BLOCK_SIZE = 128;
+    public static int BLOCK_SIZE = 4096;
 
     private static List<Block> blocks;
 
